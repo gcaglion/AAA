@@ -1,0 +1,4 @@
+1. Install Python
+2. Download Tweepy (https://github.com/tweepy/tweepy)
+3. Install Tweepy (see https://www.youtube.com/watch?v=pUUxmvvl2FE)
+4. Create Twitter app, and get keys and secrets (https://apps.twitter.com/)

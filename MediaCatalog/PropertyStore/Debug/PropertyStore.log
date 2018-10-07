@@ -1,0 +1,4 @@
+﻿  PropertyStore.cpp
+c:\users\gcaglion\documents\dev\mediacatalog\propertystore\propertystore.cpp(22): warning C4477: 'printf' : format string '%f' requires an argument of type 'double', but variadic argument 1 has type 'ULONG'
+  PropertyStore.vcxproj -> C:\Users\gcaglion\documents\dev\MediaCatalog\Debug\PropertyStore.exe
+  PropertyStore.vcxproj -> C:\Users\gcaglion\documents\dev\MediaCatalog\Debug\PropertyStore.pdb (Full PDB)

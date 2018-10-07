@@ -1,0 +1,11 @@
+﻿  MediaCatalog.cpp
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(177): warning C4477: 'printf' : format string '%ld' requires an argument of type 'long', but variadic argument 6 has type 'LONGLONG'
+  c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(177): note: consider using '%lld' in the format string
+  c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(177): note: consider using '%I64d' in the format string
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(145): warning C4101: 'length_of_arg': unreferenced local variable
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(191): warning C4101: 'length_of_arg': unreferenced local variable
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(190): warning C4101: 'szDir': unreferenced local variable
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(189): warning C4101: 'filesize': unreferenced local variable
+c:\users\gcaglion\documents\dev\mediacatalog\mediacatalog\mediacatalog.cpp(188): warning C4101: 'ffd': unreferenced local variable
+  MediaCatalog.vcxproj -> C:\Users\gcaglion\documents\dev\MediaCatalog\Debug\MediaCatalog.exe
+  MediaCatalog.vcxproj -> C:\Users\gcaglion\documents\dev\MediaCatalog\Debug\MediaCatalog.pdb (Full PDB)
