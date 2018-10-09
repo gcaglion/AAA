@@ -15,5 +15,26 @@ default temporary tablespace TEMPTS1 tempfile 'D:/oradata/algo/temp01.dbf' size 
 undo tablespace UNDOTBS1 datafile 'D:/oradata/algo/undo01.dbf' size 512m autoextend on next 512m
 ;
 
+#### LATEST ####
+#CREATE DATABASE ALGO
+#   USER SYS IDENTIFIED BY manager
+#   USER SYSTEM IDENTIFIED BY manager
+#   LOGFILE GROUP 1 ('c:/oracle/oradata/ALGO/redo01.log') SIZE 250M,
+#           GROUP 2 ('c:/oracle/oradata/ALGO/redo02.log') SIZE 250M,
+#           GROUP 3 ('c:/oracle/oradata/ALGO/redo03.log') SIZE 250M,
+#           GROUP 4 ('c:/oracle/oradata/ALGO/redo04.log') SIZE 250M
+#   MAXLOGFILES 32
+#   MAXLOGMEMBERS 2
+#   MAXLOGHISTORY 1
+#   MAXDATAFILES 100
+#   CHARACTER SET WE8ISO8859P1
+#   EXTENT MANAGEMENT LOCAL
+#   DATAFILE 'c:/oracle/oradata/ALGO/system01.dbf' SIZE 1024M
+#   SYSAUX DATAFILE 'c:/oracle/oradata/ALGO/sysaux01.dbf' SIZE 512M
+#   DEFAULT TABLESPACE users DATAFILE 'c:/oracle/oradata/ALGO/users01.dbf' SIZE 100M AUTOEXTEND OFF
+#   DEFAULT TEMPORARY TABLESPACE tempts1 TEMPFILE 'c:/oracle/oradata/ALGO/temp01.dbf' SIZE 500M 
+#   UNDO TABLESPACE undotbs1 DATAFILE 'c:/oracle/oradata/ALGO/undotbs01.dbf' SIZE 500M AUTOEXTEND OFF;
+	  
+
 @%ORACLE_HOME%\rdbms\admin\catalog.sql
 @%ORACLE_HOME%\rdbms\admin\catproc.sql
