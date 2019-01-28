@@ -21,16 +21,16 @@ BEGIN
 					substr(table_name, instr(table_name,'_')+1, instr(table_name,'_',-1)-instr(table_name,'_')-1)),
 					substr(table_name,instr(table_name,'_',-1)+1,length(table_name)-instr(table_name,'_',-1))
 					) TimeFrame
-				from user_tables order by 1
+				from user_tables where table_name<>'CATEGORIES' order by 1
 			) loop
-		dbms_output.put_line('select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name);
+		--dbms_output.put_line('select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name);
 		execute immediate 'select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name into vCount, vMinDate, vMaxDate;
 		l_RecordCount_tab.extend;
 		n:=n+1;
-		dbms_output.put_line('r.BaseTable=***'||r.BaseTable||'***');
-		dbms_output.put_line('r.TimeFrame=***'||r.TimeFrame||'***');
+		--dbms_output.put_line('r.BaseTable=***'||r.BaseTable||'***');
+		--dbms_output.put_line('r.TimeFrame=***'||r.TimeFrame||'***');
 		l_RecordCount_tab(n) := RecordCount_obj(r.table_name, r.BaseTable, r.TimeFrame, r.TableType, vCount, vMinDate, vMaxDate);
-		dbms_output.put_line('select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name);
+		--dbms_output.put_line('select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name);
 /*
 		execute immediate 'select count(*), min(NewDateTime), max(NewDateTime) from '||r.table_name||'_FILLED' into vCount, vMinDate, vMaxDate;
 		l_RecordCount_tab.extend;
