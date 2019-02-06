@@ -16,7 +16,7 @@
 
    
    string symb=Symbol();   //"US500-MAR19";
-   string tf="D1";
+   string tf="H1";
 
    int depth=loadAllBars(symb, tf);
    if(depth==0) {
@@ -34,7 +34,8 @@
    }
    
    for(int i=0; i<depth; i++) {
-      FileWrite(file_handle, vtimeS[i], vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i]);
+      //FileWrite(file_handle, vtimeS[i], NormalizeDouble(vopen[i], 6), NormalizeDouble(vhigh[i], 6), NormalizeDouble(vlow[i], 6), NormalizeDouble(vclose[i], 6), NormalizeDouble(vvolume[i], 1));
+      FileWrite(file_handle, vtimeS[i],",", vopen[i],",", vhigh[i],",", vlow[i],",", vclose[i],",", vvolume[i]);
    }
    FileClose(file_handle);
    
@@ -56,7 +57,7 @@ int loadAllBars(string symbolS, string timeframeS){
    	ArrayResize(vvolume, copied);
    	for (int bar=0; bar<copied; bar++) {
    		vtime[i]=serierates[bar].time+TimeGMTOffset();
-   		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ".", TimeToString(vtime[i], TIME_MINUTES));
+   		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ", ", TimeToString(vtime[i], TIME_MINUTES));
    		vopen[i]=serierates[bar].open;
    		vhigh[i]=serierates[bar].high;
    		vlow[i]=serierates[bar].low;
