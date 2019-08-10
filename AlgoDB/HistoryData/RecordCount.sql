@@ -1,3 +1,29 @@
+drop table Categories;
+create table Categories(
+	Symbol varchar2(16),
+	Category varchar2(32)
+);
+alter table Categories add constraint Categories_PK primary key(Symbol) using index tablespace HistoryIdx;
+--
+insert into categories values('US10YR', 'BONDS');
+--
+insert into categories values('CATTLE', 'COMMODITIES');
+insert into categories values('CORN', 'COMMODITIES');
+insert into categories values('HOIL', 'COMMODITIES');
+insert into categories values('NGAS', 'COMMODITIES');
+insert into categories values('OIL', 'COMMODITIES');
+insert into categories values('PLATINUM', 'COMMODITIES');
+insert into categories values('WTIUSD', 'COMMODITIES');
+insert into categories values('XAUUSD', 'COMMODITIES');
+--
+insert into categories values('ETXEUR', 'FOREX');
+insert into categories values('EURUSD', 'FOREX');
+insert into categories values('GBPUSD', 'FOREX');
+insert into categories values('USDJPY', 'FOREX');
+--
+insert into categories values('SPX', 'INDICES');
+commit;
+
 drop type RecordCount_tab;
 drop type RecordCount_obj;
 create type RecordCount_obj is object(TableName varchar2(64), Symbol varchar2(12), TimeFrame varchar2(3), Filled varchar2(6), TotalCount number, minDate date, maxDate date);
