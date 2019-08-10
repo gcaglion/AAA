@@ -15,13 +15,20 @@ insert into categories values('OIL', 'COMMODITIES');
 insert into categories values('PLATINUM', 'COMMODITIES');
 insert into categories values('WTIUSD', 'COMMODITIES');
 insert into categories values('XAUUSD', 'COMMODITIES');
+insert into categories values('RICE', 'COMMODITIES');
+insert into categories values('SBO', 'COMMODITIES');
+insert into categories values('SOYBEANS', 'COMMODITIES');
+insert into categories values('SUGAR', 'COMMODITIES');
+insert into categories values('WHEAT', 'COMMODITIES');
+insert into categories values('XRB', 'COMMODITIES');
 --
-insert into categories values('ETXEUR', 'FOREX');
 insert into categories values('EURUSD', 'FOREX');
 insert into categories values('GBPUSD', 'FOREX');
 insert into categories values('USDJPY', 'FOREX');
 --
 insert into categories values('SPX', 'INDICES');
+insert into categories values('ETXEUR', 'INDICES');
+insert into categories values('UKXGBP', 'INDICES');
 commit;
 
 drop type RecordCount_tab;
