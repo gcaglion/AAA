@@ -1,1 +1,1 @@
-javac -cp C:\OpenCV\3.1.0\build\java\opencv-310.jar -d .\bin src\my3d\*.java src\rubik\*.java
+javac -cp ../ExtLibs/opencv/build/java/opencv-347.jar -d .\bin src\my3d\*.java src\rubik\*.java

@@ -1,3 +1,3 @@
-set CLASSPATH=./bin;C:/OpenCV/3.1.0/build/java/opencv-310.jar
+set CLASSPATH=./bin;../ExtLibs/opencv/build/java/opencv-347.jar
 
 java rubik.RGui

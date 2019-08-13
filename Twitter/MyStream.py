@@ -2,10 +2,10 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 
-ckey    = 'aJuP1UqiIvRjAaPMbtOsFyker'
-csecret = 'aAJH5iM77ppaEgAVqIa8BXy7MYISvyoZUUyiqL6NTaQ5vjRL6b'
-atoken  = '3131497459-0G80eOPkosAc1UcKXlPmX2F1JA7Hg7uevT5C6wy'
-asecret = 'xmOA1m8pd6jbaPibyNqmFYh8S9Z3nOMdf71ptQHXMKLYK'
+ckey    = 'ZXzlHs2BAKbS5T0enojewbT8S'
+csecret = 'NswmoNFw3TbyWbRkDKfSrKceOZHxCqQfPdhdOb3qHqGvN7UV8y'
+atoken  = '3131497459-lMTQYj3YzJiU9irveBtLnaMP5CGLFcLcjbrE8Cz'
+asecret = '1v7EP0kHIzBx35XTtwh1LrnzhC6btiJk2Lua9oYBhTPpU'
 
 class listener(StreamListener):
 	def on_data(self, data):
@@ -23,5 +23,5 @@ def sentimentAnalysis(text):
 auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 twitterStream = Stream(auth, listener())
-twitterStream.filter(track=["eurusd", "bce", "fxcm", "FED"])
+twitterStream.filter(track=["eurusd"])
 
