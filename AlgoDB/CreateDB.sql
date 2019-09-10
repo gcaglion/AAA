@@ -1,18 +1,18 @@
 create database ALGO
 user sys identified by manager
 user system identified by manager
-logfile group 1 ('D:/oradata/algo/redo01.log') size 512m,
- group 2 ('D:/oradata/algo/redo02.log') size 512m,
- group 3 ('D:/oradata/algo/redo03.log') size 512m,
- group 4 ('D:/oradata/algo/redo04.log') size 512m,
- group 5 ('D:/oradata/algo/redo05.log') size 512m,
- group 6 ('D:/oradata/algo/redo06.log') size 512m
+logfile group 1 ('q:/oradata/algo/redo01.log') size 512m,
+ group 2 ('q:/oradata/algo/redo02.log') size 512m,
+ group 3 ('q:/oradata/algo/redo03.log') size 512m,
+ group 4 ('q:/oradata/algo/redo04.log') size 512m,
+ group 5 ('q:/oradata/algo/redo05.log') size 512m,
+ group 6 ('q:/oradata/algo/redo06.log') size 512m
 character set WE8ISO8859P1
 --extent management dictionary
 datafile 'D:/oradata/algo/system01.dbf' size 512m autoextend on next 128m
-sysaux datafile 'D:/oradata/algo/sysaux01.dbf' size 512m autoextend on next 128m
-default temporary tablespace TEMPTS1 tempfile 'D:/oradata/algo/temp01.dbf' size 256m
-undo tablespace UNDOTBS1 datafile 'D:/oradata/algo/undo01.dbf' size 512m autoextend on next 512m
+sysaux datafile 'D:/oradata/algo/sysaux01.dbf' size 1024m autoextend on next 128m
+default temporary tablespace TEMPTS1 tempfile 'D:/oradata/algo/temp01.dbf' size 1024m
+undo tablespace UNDOTBS1 datafile 'm:/oradata/algo/undo01.dbf' size 512m autoextend on next 512m
 ;
 
 #### LATEST ####
@@ -33,7 +33,7 @@ undo tablespace UNDOTBS1 datafile 'D:/oradata/algo/undo01.dbf' size 512m autoext
 #   SYSAUX DATAFILE 'c:/oracle/oradata/ALGO/sysaux01.dbf' SIZE 512M
 #   DEFAULT TABLESPACE users DATAFILE 'c:/oracle/oradata/ALGO/users01.dbf' SIZE 100M AUTOEXTEND OFF
 #   DEFAULT TEMPORARY TABLESPACE tempts1 TEMPFILE 'c:/oracle/oradata/ALGO/temp01.dbf' SIZE 500M 
-#   UNDO TABLESPACE undotbs1 DATAFILE 'c:/oracle/oradata/ALGO/undotbs01.dbf' SIZE 500M AUTOEXTEND OFF;
+#   UNDO TABLESPACE undotbs1 DATAFILE 'm:/oradata/ALGO/undotbs01.dbf' SIZE 500M AUTOEXTEND OFF;
 	  
 
 @%ORACLE_HOME%\rdbms\admin\catalog.sql
