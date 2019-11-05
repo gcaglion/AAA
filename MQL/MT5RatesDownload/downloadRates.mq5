@@ -6,19 +6,44 @@
 #property copyright "Copyright 2019, MetaQuotes Software Corp."
 #property link      "https://www.mql5.com"
 #property version   "1.00"
+
+input int historyLen=100;
+input string tf="H1";
+input int ATR_MAperiod=15;
+input int EMA_fastPeriod=5;
+input int EMA_slowPeriod=10;
+input int EMA_signalPeriod=5;
 //+------------------------------------------------------------------+
 //| Script program start function                                    |
 //+------------------------------------------------------------------+
    double vopen[], vhigh[], vlow[], vclose[], vvolume[];
    int vtime[]; string vtimeS[];
 
+   
+   int ATRhandle;  double ATRvalue[]; 
+   int MACDhandle;  double MACDvalue[]; 
+
  void OnStart(){
 
    
    string symb=Symbol();   //"US500-MAR19";
-   string tf="H1";
+   
 
-   int depth=loadAllBars(symb, tf);
+   MACDhandle = iMACD(symb, 0, EMA_fastPeriod, EMA_slowPeriod, EMA_signalPeriod, PRICE_CLOSE);
+   ArraySetAsSeries(MACDvalue, true);
+   if(CopyBuffer(MACDhandle, 0, 0, historyLen, MACDvalue)==0) {
+      printf("MACD copyBuffer failed.");
+      return;
+   }
+     
+   ATRhandle = iATR(symb, 0,ATR_MAperiod);
+   ArraySetAsSeries(ATRvalue, true);
+   if(CopyBuffer(ATRhandle, 0, 0, historyLen, ATRvalue)==0) {
+      printf("ATR copyBuffer failed.");
+      return;
+   }
+   
+   int depth=loadAllBars(symb, tf, historyLen);
    if(depth==0) {
       printf("loadBars failed.");
       return;
@@ -41,12 +66,12 @@
    
   }
 //+------------------------------------------------------------------+
-int loadAllBars(string symbolS, string timeframeS){
+int loadAllBars(string symbolS, string timeframeS, int hlen){
 	int i=0;
 	ENUM_TIMEFRAMES tf;
    MqlRates serierates[];
 	tf = getTimeFrameEnum(timeframeS);
-	int copied=CopyRates(symbolS, tf, 1, 10000000, serierates);	printf("copied=%d", copied);
+	int copied=CopyRates(symbolS, tf, 1, hlen, serierates);	printf("copied=%d", copied);
 	if(copied>0) {
       ArrayResize(vtime, copied);
    	ArrayResize(vtimeS, copied);
@@ -56,14 +81,14 @@ int loadAllBars(string symbolS, string timeframeS){
    	ArrayResize(vclose, copied);
    	ArrayResize(vvolume, copied);
    	for (int bar=0; bar<copied; bar++) {
-   		vtime[i]=serierates[bar].time+TimeGMTOffset();
-   		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ", ", TimeToString(vtime[i], TIME_MINUTES));
+   		vtime[i]=serierates[bar].time;//+TimeGMTOffset();
+   		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ".", TimeToString(vtime[i], TIME_MINUTES));
    		vopen[i]=serierates[bar].open;
    		vhigh[i]=serierates[bar].high;
    		vlow[i]=serierates[bar].low;
    		vclose[i]=serierates[bar].close;
    		vvolume[i]=serierates[bar].real_volume;
-   		//printf("time[%d]=%s ; OHLCV[%d]=%f|%f|%f|%f|%f", i, vtimeS[i], i, vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i]);
+   		printf("time[%d]=%s ; OHLCV[%d]=%f|%f|%f|%f|%f ; ATR=%f ; MACD=%f", i, vtimeS[i], i, vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i], ATRvalue[i], MACDvalue[i]);
    		i++;
    	}
 	}
