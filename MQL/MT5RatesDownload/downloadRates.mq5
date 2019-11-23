@@ -7,7 +7,8 @@
 #property link      "https://www.mql5.com"
 #property version   "1.00"
 
-input int historyLen=110000;
+#property script_show_inputs
+input int historyLen=100000;
 input string tf="H1";
 input int ATR_MAperiod=15;
 input int EMA_fastPeriod=5;
@@ -28,7 +29,7 @@ input int MOM_period=4320;
 //+------------------------------------------------------------------+
    double vopen[], vhigh[], vlow[], vclose[], vvolume[];
    int vtime[]; string vtimeS[];
-
+   int copied;
    
    int MACDhandle; double MACDvalue[]; 
    int CCIhandle;  double CCIvalue[];
@@ -45,52 +46,58 @@ input int MOM_period=4320;
    string symb=Symbol();   //"US500-MAR19";
    
 
-   MACDhandle = iMACD(symb, 0, EMA_fastPeriod, EMA_slowPeriod, EMA_signalPeriod, PRICE_CLOSE);
+   MACDhandle = iMACD(symb, 0, EMA_fastPeriod, EMA_slowPeriod, EMA_signalPeriod, PRICE_OPEN);
    ArraySetAsSeries(MACDvalue, false);
-   if(CopyBuffer(MACDhandle, 0, 0, historyLen, MACDvalue)<=0) {
-      printf("MACD copyBuffer failed.");
+   copied=CopyBuffer(MACDhandle, 0, 0, historyLen, MACDvalue);
+   if(copied<historyLen) {
+      printf("MACD copyBuffer failed. copied=%d", copied);
       return;
    }
      
-   CCIhandle = iCCI(symb, 0, CCI_MAperiod, PRICE_CLOSE);
+   CCIhandle = iCCI(symb, 0, CCI_MAperiod, PRICE_OPEN);
    ArraySetAsSeries(CCIvalue, false);
-   if(CopyBuffer(CCIhandle, 0, 0, historyLen, CCIvalue)<=0) {
-      printf("CCI copyBuffer failed.");
+   copied=CopyBuffer(CCIhandle, 0, 0, historyLen, CCIvalue);
+   if(copied<historyLen) {
+      printf("CCI copyBuffer failed. copied=%d", copied);
       return;
    }
      
    ATRhandle = iATR(symb, 0,ATR_MAperiod);
    ArraySetAsSeries(ATRvalue, false);
-   if(CopyBuffer(ATRhandle, 0, 0, historyLen, ATRvalue)<=0) {
-      printf("ATR copyBuffer failed.");
+   copied=CopyBuffer(ATRhandle, 0, 0, historyLen, ATRvalue);
+   if(copied<historyLen) {
+      printf("ATR copyBuffer failed. copied=%d", copied);
       return;
    }
    
-   BOLLhandle = iBands(symb, 0,BOLL_period, BOLL_shift, BOLL_deviation, PRICE_CLOSE);
+   BOLLhandle = iBands(symb, 0,BOLL_period, BOLL_shift, BOLL_deviation, PRICE_OPEN);
    ArraySetAsSeries(BOLLvalueH, false); ArraySetAsSeries(BOLLvalueM, false); ArraySetAsSeries(BOLLvalueL, false);
-   if(CopyBuffer(BOLLhandle, 0, 0, historyLen, BOLLvalueM)<=0 || CopyBuffer(BOLLhandle, 1, 0, historyLen, BOLLvalueH)<=0 || CopyBuffer(BOLLhandle, 2, 0, historyLen, BOLLvalueL)<=0) {
+   if(CopyBuffer(BOLLhandle, 0, 0, historyLen, BOLLvalueM)<historyLen || CopyBuffer(BOLLhandle, 1, 0, historyLen, BOLLvalueH)<historyLen || CopyBuffer(BOLLhandle, 2, 0, historyLen, BOLLvalueL)<historyLen) {
       printf("BOLL copyBuffer failed.");
       return;
    }
    
-   DEMAhandle = iDEMA(symb, 0,DEMA_period, DEMA_shift, PRICE_CLOSE);
+   DEMAhandle = iDEMA(symb, 0,DEMA_period, DEMA_shift, PRICE_OPEN);
    ArraySetAsSeries(DEMAvalue, false);
-   if(CopyBuffer(DEMAhandle, 0, 0, historyLen, DEMAvalue)<=0) {
-      printf("DEMA copyBuffer failed.");
+   copied=CopyBuffer(DEMAhandle, 0, 0, historyLen, DEMAvalue);
+   if(copied<historyLen) {
+      printf("DEMA copyBuffer failed. copied=%d", copied);
       return;
    }
    
-   MAhandle = iMA(symb, 0,MA_period, MA_shift, MODE_SMA, PRICE_CLOSE);
+   MAhandle = iMA(symb, 0,MA_period, MA_shift, MODE_SMA, PRICE_OPEN);
    ArraySetAsSeries(MAvalue, false);
-   if(CopyBuffer(MAhandle, 0, 0, historyLen, MAvalue)<=0) {
-      printf("MA copyBuffer failed.");
+   copied=CopyBuffer(MAhandle, 0, 0, historyLen, MAvalue);
+   if(copied<historyLen) {
+      printf("MA copyBuffer failed. copied=%d", copied);
       return;
    }
    
-   MOMhandle = iMomentum(symb, 0, MOM_period, PRICE_CLOSE);
+   MOMhandle = iMomentum(symb, 0, MOM_period, PRICE_OPEN);
    ArraySetAsSeries(MOMvalue, false);
-   if(CopyBuffer(MOMhandle, 0, 0, historyLen, MOMvalue)<=0) {
-      printf("MOM copyBuffer failed.");
+   copied=CopyBuffer(MOMhandle, 0, 0, historyLen, MOMvalue);
+   if(copied<historyLen) {
+      printf("MOM copyBuffer failed. copied=%d", copied);
       return;
    }
    
@@ -103,8 +110,7 @@ input int MOM_period=4320;
    
    
    
-   int depth=loadAllBars(symb, tf, historyLen);
-   if(depth==0) {
+   if(!loadAllBars(symb, tf, historyLen)){
       printf("loadBars failed.");
       return;
    }
@@ -118,7 +124,7 @@ input int MOM_period=4320;
       return;
    }
    
-   for(int i=0; i<depth; i++) {
+   for(int i=0; i<historyLen; i++) {
       //FileWrite(file_handle, vtimeS[i], NormalizeDouble(vopen[i], 6), NormalizeDouble(vhigh[i], 6), NormalizeDouble(vlow[i], 6), NormalizeDouble(vclose[i], 6), NormalizeDouble(vvolume[i], 1));
       //FileWrite(file_handle, vtimeS[i],",", vopen[i],",", vhigh[i],",", vlow[i],",", vclose[i],",", vvolume[i], MACDvalue[i], ",", CCIvalue[i], ",", ATRvalue[i], ",", BOLLvalueH[i], ",", BOLLvalueM[i], ",", BOLLvalueL[i], ",", DEMAvalue[i], ",", MAvalue[i], ",", MOMvalue[i], ",", ADvalue[i]);
       FileWrite(file_handle, vtimeS[i], vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i], MACDvalue[i], CCIvalue[i], ATRvalue[i], BOLLvalueH[i], BOLLvalueM[i], BOLLvalueL[i], DEMAvalue[i], MAvalue[i], MOMvalue[i]);
@@ -127,33 +133,36 @@ input int MOM_period=4320;
    
   }
 //+------------------------------------------------------------------+
-int loadAllBars(string symbolS, string timeframeS, int hlen){
+bool loadAllBars(string symbolS, string timeframeS, int hlen){
 	int i=0;
 	ENUM_TIMEFRAMES etf;
    MqlRates serierates[];
 	etf = getTimeFrameEnum(timeframeS);
-	int copied=CopyRates(symbolS, etf, 1, hlen, serierates);	printf("copied=%d", copied);
-	if(copied>0) {
-      ArrayResize(vtime, copied);
-   	ArrayResize(vtimeS, copied);
-   	ArrayResize(vopen, copied);
-   	ArrayResize(vhigh, copied);
-   	ArrayResize(vlow, copied);
-   	ArrayResize(vclose, copied);
-   	ArrayResize(vvolume, copied);
-   	for (int bar=0; bar<copied; bar++) {
-   		vtime[i]=(int)serierates[bar].time;//+TimeGMTOffset();
-   		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ".", TimeToString(vtime[i], TIME_MINUTES));
-   		vopen[i]=serierates[bar].open;
-   		vhigh[i]=serierates[bar].high;
-   		vlow[i]=serierates[bar].low;
-   		vclose[i]=serierates[bar].close;
-   		vvolume[i]=(double)serierates[bar].real_volume;
-   		//printf("time[%d]=%s ; OHLCV[%d]=%f|%f|%f|%f|%f ; ATR=%f ; MACD=%f ; CCI=%f ; BOLL_H=%f ; BOLL_M=%f ; BOLL_L=%f", i, vtimeS[i], i, vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i], ATRvalue[i], MACDvalue[i], CCIvalue[i], BOLLvalueH[i], BOLLvalueM[i], BOLLvalueL[i]);
-   		i++;
-   	}
+	copied=CopyRates(symbolS, etf, 1, hlen, serierates);
+	   if(copied<historyLen) {
+      printf("OHLCV copyRates failed. copied=%d", copied);
+      return false;
+   }
+ 
+   ArrayResize(vtime, copied);
+	ArrayResize(vtimeS, copied);
+	ArrayResize(vopen, copied);
+	ArrayResize(vhigh, copied);
+	ArrayResize(vlow, copied);
+	ArrayResize(vclose, copied);
+	ArrayResize(vvolume, copied);
+	for (int bar=0; bar<copied; bar++) {
+		vtime[i]=(int)serierates[bar].time;//+TimeGMTOffset();
+		StringConcatenate(vtimeS[i], TimeToString(vtime[i], TIME_DATE), ".", TimeToString(vtime[i], TIME_MINUTES));
+		vopen[i]=serierates[bar].open;
+		vhigh[i]=serierates[bar].high;
+		vlow[i]=serierates[bar].low;
+		vclose[i]=serierates[bar].close;
+		vvolume[i]=(double)serierates[bar].real_volume; if(vvolume[i]<0||vvolume[i]>1000) vvolume[i]=0;
+		//printf("time[%d]=%s ; OHLCV[%d]=%f|%f|%f|%f|%f ; ATR=%f ; MACD=%f ; CCI=%f ; BOLL_H=%f ; BOLL_M=%f ; BOLL_L=%f", i, vtimeS[i], i, vopen[i], vhigh[i], vlow[i], vclose[i], vvolume[i], ATRvalue[i], MACDvalue[i], CCIvalue[i], BOLLvalueH[i], BOLLvalueM[i], BOLLvalueL[i]);
+		i++;
 	}
-	return copied;
+	return true;
 }
 ENUM_TIMEFRAMES getTimeFrameEnum(string tfS) {
 	if (tfS=="H1") return PERIOD_H1;
