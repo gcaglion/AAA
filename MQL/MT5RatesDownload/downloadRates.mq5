@@ -8,7 +8,8 @@
 #property version   "1.00"
 
 #property script_show_inputs
-input int historyLen=100000;
+input int historyLen=95000;
+input ENUM_APPLIED_PRICE priceType=PRICE_CLOSE;
 input string tf="H1";
 input int ATR_MAperiod=15;
 input int EMA_fastPeriod=5;
@@ -42,11 +43,10 @@ input int MOM_period=4320;
    
  void OnStart(){
 
-   
    string symb=Symbol();   //"US500-MAR19";
    
 
-   MACDhandle = iMACD(symb, 0, EMA_fastPeriod, EMA_slowPeriod, EMA_signalPeriod, PRICE_OPEN);
+   MACDhandle = iMACD(symb, 0, EMA_fastPeriod, EMA_slowPeriod, EMA_signalPeriod, priceType);
    ArraySetAsSeries(MACDvalue, false);
    copied=CopyBuffer(MACDhandle, 0, 0, historyLen, MACDvalue);
    if(copied<historyLen) {
@@ -54,7 +54,7 @@ input int MOM_period=4320;
       return;
    }
      
-   CCIhandle = iCCI(symb, 0, CCI_MAperiod, PRICE_OPEN);
+   CCIhandle = iCCI(symb, 0, CCI_MAperiod, priceType);
    ArraySetAsSeries(CCIvalue, false);
    copied=CopyBuffer(CCIhandle, 0, 0, historyLen, CCIvalue);
    if(copied<historyLen) {
@@ -70,14 +70,14 @@ input int MOM_period=4320;
       return;
    }
    
-   BOLLhandle = iBands(symb, 0,BOLL_period, BOLL_shift, BOLL_deviation, PRICE_OPEN);
+   BOLLhandle = iBands(symb, 0,BOLL_period, BOLL_shift, BOLL_deviation, priceType);
    ArraySetAsSeries(BOLLvalueH, false); ArraySetAsSeries(BOLLvalueM, false); ArraySetAsSeries(BOLLvalueL, false);
    if(CopyBuffer(BOLLhandle, 0, 0, historyLen, BOLLvalueM)<historyLen || CopyBuffer(BOLLhandle, 1, 0, historyLen, BOLLvalueH)<historyLen || CopyBuffer(BOLLhandle, 2, 0, historyLen, BOLLvalueL)<historyLen) {
       printf("BOLL copyBuffer failed.");
       return;
    }
    
-   DEMAhandle = iDEMA(symb, 0,DEMA_period, DEMA_shift, PRICE_OPEN);
+   DEMAhandle = iDEMA(symb, 0,DEMA_period, DEMA_shift, priceType);
    ArraySetAsSeries(DEMAvalue, false);
    copied=CopyBuffer(DEMAhandle, 0, 0, historyLen, DEMAvalue);
    if(copied<historyLen) {
@@ -85,7 +85,7 @@ input int MOM_period=4320;
       return;
    }
    
-   MAhandle = iMA(symb, 0,MA_period, MA_shift, MODE_SMA, PRICE_OPEN);
+   MAhandle = iMA(symb, 0,MA_period, MA_shift, MODE_SMA, priceType);
    ArraySetAsSeries(MAvalue, false);
    copied=CopyBuffer(MAhandle, 0, 0, historyLen, MAvalue);
    if(copied<historyLen) {
@@ -93,7 +93,7 @@ input int MOM_period=4320;
       return;
    }
    
-   MOMhandle = iMomentum(symb, 0, MOM_period, PRICE_OPEN);
+   MOMhandle = iMomentum(symb, 0, MOM_period, priceType);
    ArraySetAsSeries(MOMvalue, false);
    copied=CopyBuffer(MOMhandle, 0, 0, historyLen, MOMvalue);
    if(copied<historyLen) {
@@ -138,7 +138,7 @@ bool loadAllBars(string symbolS, string timeframeS, int hlen){
 	ENUM_TIMEFRAMES etf;
    MqlRates serierates[];
 	etf = getTimeFrameEnum(timeframeS);
-	copied=CopyRates(symbolS, etf, 1, hlen, serierates);
+	copied=CopyRates(symbolS, etf, i, hlen, serierates);
 	   if(copied<historyLen) {
       printf("OHLCV copyRates failed. copied=%d", copied);
       return false;
